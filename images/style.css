@@ -25,6 +25,15 @@ a{
 	color:#706860;
 }
 
+.imgdiv .bgm{
+	width:298px;
+	height:52px;
+	float:right;
+	position:relative;
+	right:2px;
+	bottom:2px;
+}
+
 .imgdiv .txt1 .p1{
 	display:block;
 	padding-top:300px;
