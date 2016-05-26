@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Wave Clock</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #f0f0f0;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				position: absolute;
+				top: 0px;
+				width: 100%;
+				padding: 5px;
+				text-align:center;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="three.js"></script>
+		
+		<script>
+		
+			var radius = 100, halfRadius = radius / 2, roundGrid = 60, rounds = 10, totalGrid = roundGrid * rounds,
+				leftX = 10 * Math.cos(93 * Math.PI / 180), leftY = 10 * Math.sin(93 * Math.PI / 180),
+				rightX = 10 * Math.cos(87 * Math.PI / 180), rightY = 10 * Math.sin(87 * Math.PI / 180)
+				controlX = 0, controlY = 10 / Math.cos(3 * Math.PI / 180)
+				rotateStep = -6 * Math.PI / 180,
+				fanMeshZOffset = 65, MeshIdOffset = 8;
+			var	date, hour, minute, second1 = 0, second2, secondMoveI = 0;
+				
+			var grid = [], intersects = [], objects = [], buffer1 = [], buffer2 = [];
+			
+			var container, stats;
+
+			var camera, scene, renderer;
+			
+			var geometry, material;
+
+			var group, text, circle;
+
+			//var controls;
+			
+			var target;
+			
+			//var fanMeshId = 0;
+
+			init();
+			animate();
+			function init() {
+			/**
+				1.创建一个容器，放到HTML中body 或div等可容纳canvas的标签
+				2.创建相机camera，设置相机位置
+				3.创建场景，相机看场景
+				4.[option]创建组，组可以加到场景scene里，object可以放到组里，也可以直接把object放到场景scene
+				5.在场景scene里加你的东西object
+				6.创建描绘器renderer，用来联通相机camera和场景scene，描绘器renderer要加入到容器中
+				7.使用描绘render()显示object
+				
+				树：
+				body{container（div){renderer{camera，scene{object}}}}
+			*/
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				
+				scene = new THREE.Scene();
+
+				//相机
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.set( 0, -150, 110 );
+				//camera.position.set(0,0, 300);
+				//camera.rotation.x = -1;
+				camera.lookAt( new THREE.Vector3( 0, 0, 50 ) );
+				//scene.add( camera );
+				//光线
+				scene.add( new THREE.AmbientLight( 0x808080/*0x808080*/ ) );	
+
+				light = new THREE.SpotLight( 0xfffff0, 1.25 );
+				light.position.set( - 500, 900, 600 );
+				light.target.position.set( 0, 0, 0 );
+				/*.castShadow
+				If set to true light will cast dynamic shadows. Warning: This is expensive and requires tweaking to get shadows looking right.
+				Default — false. 
+				*/
+				light.castShadow = true;
+				scene.add( light );				
+				
+				
+				geometry = new THREE.CircleGeometry( radius, 60 );
+				material = new THREE.MeshLambertMaterial( { color: 0xd0d0d0 } );
+				
+				//初始化缓存数组
+				for(var i = 0; i < 10 * 60; i++){
+					buffer1[i] = 0;
+					buffer2[i] = 0;
+				}
+				
+				//画格子
+				var fanShape = new THREE.Shape();
+				fanShape.moveTo(0, 0);
+				fanShape.lineTo(leftX, leftY);
+				fanShape.quadraticCurveTo(controlX, controlY, rightX, rightY);
+				fanShape.lineTo(0, 0);
+				
+				var extrudeSettings = { amount: 2, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+				var fanGeometry = new THREE.ExtrudeGeometry(fanShape, extrudeSettings);	
+				
+				fanGeometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 0, 1 ) );
+				
+				for(var i = 0; i < 60; i++){
+
+					var material = new THREE.MeshLambertMaterial({color: 0xd0d0d0});
+					var fanMesh = new THREE.Mesh(fanGeometry, material);
+					fanMesh.position.z = fanMeshZOffset;
+					fanMesh.rotation.z = i * rotateStep;
+					fanMesh.castShadow = true;
+					fanMesh.receiveShadow = true;
+					//fanMesh.id += fanMeshId;
+					scene.add(fanMesh);
+					
+					objects.push(fanMesh);
+				}
+
+				
+				for(var i = 1; i < 10; i++){
+					fanShape = new THREE.Shape();
+					fanShape.moveTo(i * leftX, i * leftY);
+					fanShape.quadraticCurveTo(controlX, i * controlY, i * rightX, i * rightY);
+					fanShape.lineTo((i + 1) * rightX, (i + 1) * rightY);
+					fanShape.quadraticCurveTo(controlX, (i + 1) * controlY, (i + 1) * leftX, (i + 1) * leftY);
+					fanShape.lineTo(i * leftX, i * leftY);
+					
+					fanGeometry = new THREE.ExtrudeGeometry(fanShape, extrudeSettings);
+					
+					fanGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 0, 1));
+					for(var j = 0; j < 60; j++){
+						fanMesh = new THREE.Mesh(fanGeometry, new THREE.MeshLambertMaterial({color: 0xd0d0d0}));
+						fanMesh.position.z = fanMeshZOffset;
+						fanMesh.rotation.z = j * rotateStep;
+						fanMesh.castShadow = true;
+						fanMesh.receiveShadow = true;
+						//fanMesh.id += fanMeshId;
+					
+						scene.add(fanMesh);
+						
+						objects.push(fanMesh);
+					}
+				}
+				/**
+				var loader = new THREE.FontLoader();
+
+				loader.load( 'fonts/helvetiker_regular.typeface.js', function ( font ) {
+
+					var textGeo = new THREE.TextGeometry( "XII", {
+
+						font: font,
+
+						size: 8,
+						height: 2,
+						curveSegments: 30,
+
+						bevelThickness: 3,
+						bevelSize: 1,
+						bevelEnabled: true
+
+					} );
+					
+					var material = new THREE.MeshPhongMaterial({color: 0xffdddd});
+					var textMesh = new THREE.Mesh( textGeo, material );
+					
+					textGeo.computeBoundingBox();
+					var textWidth = textGeo.boundingBox.max.x - textGeo.boundingBox.min.x;
+					var textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
+    
+					//textMesh.position.x = -0.5 * textWidth;
+					//textMesh.position.y = -0.5 * textHeight;
+					
+					//textMesh.position.z = fanMeshZOffset + 20;
+					textMesh.position.set(-0.5 * textWidth, -0.5 * textHeight + radius, fanMeshZOffset + 10);
+					
+					textMesh.rotation.set(1, 0, 0);
+
+					scene.add( textMesh );
+				});
+				*/
+				//时钟刻度
+				//clockLabel();
+				//准备renderer
+				renderer = new THREE.WebGLRenderer();
+				
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setClearColor( 0xf0f0f0 );
+				
+				renderer.shadowMapEnabled = true;
+				renderer.shadowMapSoft = true;
+
+				renderer.shadowCameraNear = 3;
+				renderer.shadowCameraFar = camera.far;
+				renderer.shadowCameraFov = 50;
+
+				renderer.shadowMapBias = 0.0039;
+				renderer.shadowMapDarkness = 1;
+				renderer.shadowMapWidth = 512;
+				renderer.shadowMapHeight = 512;
+				
+				container.appendChild( renderer.domElement );
+				
+				//控制
+				//controls = new THREE.TrackballControls( camera );
+				
+				//document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				//document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				//document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				
+				mouse = new THREE.Vector3( 0, 0, 0.5 );
+				//projector = new THREE.Projector();//投影仪
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			}
+			
+			function onDocumentMouseMove(event){
+			
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				//console.log(mouse.x + '	' + mouse.y);
+			
+				mouse.unproject( camera );
+				mouse.sub(camera.position).normalize();
+				
+				//Ray对象的构造函数.用来创建一个三维空间里的射线对象.Ray对象的功能函数采用 
+				//定义构造的函数原型对象来实现,ray主要是用来进行碰撞检测,在选择场景中的对象时经常会用到,判断当前鼠标是否与对象重合用来选择对象.
+				ray = new THREE.Raycaster( camera.position, mouse );//原点为相机位置的射线
+
+				intersects = ray.intersectObjects( objects );
+
+			}
+			
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				
+
+			}
+			
+			function render() {
+			
+				
+				
+				
+				
+			
+				getTarget(4);
+				wave();
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				renderer.render( scene, camera );
+				//controls.update();
+
+			}
+			
+			function clockLabel(){
+				addText('XII', 0, radius, 1, 0, 0);
+				addText('III', radius, 0, 1.5, -0.38, 0);
+				addText('VI', 0, -radius, 1, 0, 0);
+				addText('IX', -radius, 0, 1.5, 0.38, 0);
+			}
+			
+			function addText(text = 'text', x = 0, y = 0,rotateX = 0, rotateY = 0, rotateZ = 0){
+				var loader = new THREE.FontLoader();
+
+				loader.load( 'helvetiker_regular.typeface.js', function ( font ) {
+
+					var textGeo = new THREE.TextGeometry( text, {
+
+						font: font,
+
+						size: 8,
+						height: 2,
+						//curveSegments: 30,
+
+						//bevelThickness: 3,
+						//bevelSize: 1,
+						//bevelEnabled: true
+
+					} );
+					
+					var material = new THREE.MeshPhongMaterial({color: 0xffdddd});
+					var textMesh = new THREE.Mesh( textGeo, material );
+					
+					textGeo.computeBoundingBox();
+					var textWidth = textGeo.boundingBox.max.x - textGeo.boundingBox.min.x;
+					var textHeight = textGeo.boundingBox.max.y - textGeo.boundingBox.min.y;
+    
+					//textMesh.position.x = -0.5 * textWidth;
+					//textMesh.position.y = -0.5 * textHeight;
+					
+					//textMesh.position.z = fanMeshZOffset + 20;
+					textMesh.position.set(-0.5 * textWidth + x, -0.5 * textHeight + y, fanMeshZOffset + 10);
+					
+					textMesh.rotation.set(rotateX, rotateY, rotateZ);
+
+					scene.add( textMesh );
+				});
+			}
+			
+			//得到鼠标指向目标
+			function getTarget(scaleTimes){
+			
+				if ( intersects.length > 0 ) {
+				
+					//intersects[0].object.material.color.setHex( Math.random() * 0xffffff );
+					//目标格子的序号			
+					target = intersects[0].object.id - MeshIdOffset;
+					//console.log(target);
+					
+					buffer1[target] = scaleTimes;
+					return;
+				}
+				
+				date = new Date();
+				hour = date.getHours() % 12;
+				minute = date.getMinutes();
+				second2 = date.getSeconds();
+				
+				//console.log(hour);
+				
+				if(second1 != second2){
+					second1 = second2;
+					target = second1;
+					secondMoveI = 0;
+				}
+				if(secondMoveI % 2 == 0){
+					target += 60;
+				}
+				secondMoveI++;
+				if(secondMoveI = 19) secondMoveI--; 
+
+				//console.log(target);
+				
+				buffer1[ target ] = scaleTimes;
+			}
+			
+			//刷新
+			function wave(){
+				updateBuffer();
+				updateGrid();
+			}
+			//scale y 也可以看
+			function updateGrid(){
+				//刷新鼠标位置
+				for ( var i = 0, l = totalGrid; i < l; i ++ ) {
+
+					objects[ i ].scale.z += ( Math.max( 0.1, 0.1 + buffer2[ i ] ) - objects[ i ].scale.z ) * 0.1;
+					
+				}
+				//刷新时间
+				if(intersects.length == 0){
+					for(var i = 0; i < 6; i++){
+						objects[hour * 5 + Math.floor(minute / 12) + i * 60].scale.z = 1.0002;
+					}
+					for(var i = 0; i < 8; i++){
+						objects[minute + i * 60].scale.z = 1.0001;
+					}
+				}
+			}
+			
+			function updateBuffer(){
+				
+				for ( var i = 0, l = totalGrid; i < l; i ++ ) {
+
+					var R1, indexOfR1, R2, indexOfR2;
+
+					if ( i >= totalGrid - roundGrid ) {
+
+						// 最外圈
+
+						R1 = 0;
+						R2 = buffer1[ i - roundGrid ];
+						
+					}else if(i < roundGrid){
+					//最里圈
+						R1 = buffer1[i + roundGrid];
+						R2 = 0;
+					
+					} else {
+
+						R1 = buffer1[ i + roundGrid ];
+						R2 = buffer1[ i - roundGrid ];
+
+					}
+					
+					if(i == 0){
+						//开始项
+						indexOfR1 = 0;
+						indexOfR2 = buffer1[i + 1]
+					}else if(i == totalGrid - 1){
+						indexOfR1 = buffer1[i - 1];
+						indexOfR2 = 0;
+					}else{
+								
+						indexOfR1 = buffer1[ i - 1 ];
+						indexOfR2 = buffer1[ i + 1 ];
+					}
+
+					buffer2[ i ] = ( R1 + indexOfR1 + R2 + indexOfR2) / 1.9 - buffer2[ i ];
+					buffer2[ i ] -= buffer2[ i ] / 10;
+
+
+				}
+
+				temp = buffer1;
+				buffer1 = buffer2;
+				buffer2 = temp;
+			}
+			
+			/**
+			function getAngle(x,y){
+				if(x > 0){
+					if (y > 0){
+						return Math.atan(y / x);
+					}
+					else{
+						return 2 * Math.PI - Math.atan(-y / x);
+					
+					}
+				}
+				else if(x < 0){
+					if(y > 0){
+						return Math.PI - Math.atan(-y / x);
+					}
+					else{
+						return Math.PI + Math.atan(y / x);
+					}
+				}
+				else{
+					return 0;
+				}
+			}
+			*/
+
+		
+		</script>
+	</body>
+</html>
