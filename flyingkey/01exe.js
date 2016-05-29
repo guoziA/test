@@ -201,7 +201,7 @@ function createKey(keyCode) {
 	elements.push( element );
 
 	var img = document.createElement("img");
-	img.src = keyCode + ".png";
+	img.src = keyCode + ".jpg";
 	img.width = size;
 	img.height = size;
 	img.style.position = 'absolute';//相对于父元素位置绝对
