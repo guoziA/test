@@ -1,0 +1,94 @@
+body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,form,input,textarea,p {
+	margin:0px;
+	padding:0px;
+	font-size:13px;
+}
+
+ul{
+	list-style:none;
+}
+
+a{
+	text-decoration:none;
+}
+.imgdiv{
+	height:600px;
+	background:url(city.jpg);
+	background-size:cover;
+}
+
+.imgdiv .txt1{
+	height:600px;
+	width:600px;
+	margin:0px auto;
+	font-size:15px;
+	color:#706860;
+}
+
+.imgdiv .bgm{
+	width:298px;
+	height:52px;
+	float:right;
+	position:relative;
+	right:2px;
+	bottom:2px;
+}
+
+.imgdiv .txt1 .p1{
+	display:block;
+	padding-top:300px;
+	margin:0px auto;
+	font-size:117px;
+	text-align:center;
+}
+
+.imgdiv .txt1 .p2{
+	display:block;
+	font-family:黑体;
+	margin:0px auto;
+	font-size:50px;
+	text-align:center;
+}
+
+.textdiv{
+	width:700px;
+	height:750px;
+	color:#766A5E;
+	margin:100px auto;
+}
+
+.textdiv .about p{
+	font-size:16px;
+	text-align:center;
+	margin-bottom:7px;
+}
+
+.textdiv .about .me{
+	font-size:25px;
+	margin-bottom:20px;
+	color:#2F1D1D;
+}
+
+.textdiv .lyrics p{
+	font-size:16px;
+	text-align:center;
+	margin-bottom:7px;
+}
+
+.textdiv .lyrics .heart{
+	font-size:25px;
+	margin-top:80px;
+	margin-bottom:20px;
+	color:#2F1D1D;
+}
+
+.aboutdiv{
+	height:80px;
+	background:#BDCAD6;
+}
+
+.aboutdiv p{
+	text-align:center;
+	font-size:15px;
+	padding-top:35px;
+}
