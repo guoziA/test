@@ -104,7 +104,7 @@ function reset() {
 function loadImg(){
 	for(var i = 65; i <= 90; i++){
 		var img = document.createElement("img");
-		img.src = i + ".jpg";
+		img.src = keyCode + ".jpg";
 	}
 
 }
