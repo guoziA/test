@@ -1,0 +1,507 @@
+<!doctype html>
+<meta charset="UTF-8">
+<title>生日快乐</title>
+<meta name="author" content="Rafał Krupiński">
+<link rel="shortcut icon" href="imgs/25.ico"/>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        font: inherit;
+        vertical-align: baseline;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    html {
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        overflow: hidden;
+        font: 100%/1.25 Helvetica, Arial, sans-serif;
+        color: #fff;
+        -webkit-perspective: 1000px;
+        -moz-perspective: 1000px;
+        -ms-perspective: 1000px;
+        -o-perspective: 1000px;
+        perspective: 1000px;
+        background-color: #5888DA;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(#969696), to(#C4C4C4));
+        background-image: -webkit-linear-gradient(top, #969696, #C4C4C4);
+        background-image: -moz-linear-gradient(top, #969696, #C4C4C4);
+        background-image: -ms-linear-gradient(top, #969696, #C4C4C4);
+        background-image: -o-linear-gradient(top, #969696, #C4C4C4);
+        background-image: linear-gradient(to bottom, #969696, #C4C4C4);
+    }
+    h1 {
+        /*font-size: 2em;*/
+    }
+    .book {
+		clear: both;
+        width: 500px;
+        height: 500px;
+        margin-top: -150px;
+        position: absolute;
+        left: 50%;
+        top: 40%;
+        -webkit-transform: rotateX(25deg);
+        -moz-transform: rotateX(25deg);
+        -ms-transform: rotateX(25deg);
+        -o-transform: rotateX(25deg);
+        transform: rotateX(25deg);
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+    .page {
+        width: 500px;
+        height: 500px;
+        padding: 1em;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-indent: 2em;
+    }
+    .front {
+        background-color: #272727;
+    }
+    .back {
+        background-color: #50545D;
+    }
+    .front-cover {
+        cursor: move;
+        -webkit-transform-origin: 0 50%;
+        -moz-transform-origin: 0 50%;
+        -ms-transform-origin: 0 50%;
+        -o-transform-origin: 0 50%;
+        transform-origin: 0 50%;
+        -webkit-transform: rotateY(0deg);
+        -moz-transform: rotateY(0deg);
+        -ms-transform: rotateY(0deg);
+        -o-transform: rotateY(0deg);
+        transform: rotateY(0deg);
+    }
+    .front-cover .back {
+        
+        background-position: 50% 50%;
+        -webkit-transform: translateZ(3px);
+        -moz-transform: translateZ(3px);
+        -ms-transform: translateZ(3px);
+        -o-transform: translateZ(3px);
+        transform: translateZ(3px);
+    }
+	
+	#page0 .back {
+		background-image: url(imgs/23.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page1 .back {
+		background-image: url(imgs/1.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page2 .back {
+		background-image: url(imgs/2.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page3 .back {
+		background-image: url(imgs/3.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page4 .back {
+		background-image: url(imgs/4.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page5 .back {
+		background-image: url(imgs/5.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page6 .back {
+		background-image: url(imgs/6.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page7 .back {
+		background-image: url(imgs/7.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page8 .back {
+		background-image: url(imgs/8.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page9 .back {
+		background-image: url(imgs/9.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page10 .back {
+		background-image: url(imgs/10.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page11 .back {
+		background-image: url(imgs/11.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page12 .back {
+		background-image: url(imgs/12.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page13 .back {
+		background-image: url(imgs/13.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page14 .back {
+		background-image: url(imgs/14.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page15 .back {
+		background-image: url(imgs/15.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page16 .back {
+		background-image: url(imgs/16.jpg);
+        background-repeat: no-repeat;
+	}
+	
+	#page17 .back {
+		background-image: url(imgs/17.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page18 .back {
+		background-image: url(imgs/18.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page19 .back {
+		background-image: url(imgs/19.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page20 .back {
+		background-image: url(imgs/20.jpg);
+		background-repeat: no-repeat;
+	}
+	
+	#page21 .back {
+		background-image: url(imgs/22.jpg);
+		background-repeat: no-repeat;
+	}
+	
+    .back-cover .font {
+		backgroud: url(imgs/24.jpg);
+		background-repeat: no-repeat;
+        -webkit-transform: translateZ(-3px);
+        -moz-transform: translateZ(-3px);
+        -ms-transform: translateZ(-3px);
+        -o-transform: translateZ(-3px);
+        transform: translateZ(-3px); 
+    }
+    .p3d {
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        -o-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+    .flip {
+        -webkit-transform: rotateY(180deg);
+        -moz-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        -o-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+		
+		font-family: Calibri, 黑体, 微软雅黑;
+		font-size: 18px;
+		line-height: 250%;
+		padding-top: 100px;
+    }
+	
+	.p3d p{
+		font-family: Calibri, 黑体;
+		line-height: 200%;
+	}
+	.yellowman {
+		text-align: center;
+	}
+</style>
+<div style="text-align:center;clear:both">
+</div>
+<div class="book p3d">
+    <div class="back-cover p3d">
+       <div class="page back flip"></div>
+        <div class="page front p3d">
+            <div class="yellowman"><img src="imgs/29.jpg"/>
+				<p>喜欢么</p>
+				<button type="button" onclick="yes()">还行</button>
+				<button type="button" onclick="no()" style="margin-left: 30px;">垃圾</button>
+			</div>
+        </div>
+    </div>
+
+	
+	<div class="front-cover p3d" id="page0" title="0">
+        <div class="page front flip p3d">
+			开心 　开心　 开心 　开心 　开心 　开心 　开心 　开心 　开心　 开心 　开心 　开心 　开心 　开心 　开心 　开心　 开心 　开心　 开心　 开心　 开心 　开心 　开心 　开心　 开心 　开心 　开心　 开心　 开心　 开心　 开心　开心 　开心 　开心 　开心 　开心 　开心 　开心 　开心 　开心　 开心　 开心　 开心　 开心　 开心 　开心　 开心 　　愿你开心！！ 
+			
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+    <div class="front-cover p3d" id="page1" title="1">
+        <div class="page front flip p3d">
+            最后是一本正经、沸腾着蓝色霸气的我！
+		</div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page2" title="2">
+        <div class="page front flip p3d">
+            苍茫的天涯是我的爱,绵绵的青山脚下花正开,什么样的节奏是最呀最摇摆,什么样的歌声才是最开怀,弯弯的河水从天上来,流向那万紫千红一片海,火辣辣的歌谣是我们的期待,一路边走边唱才是最自在,我们要唱就要唱得最痛快.
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page3" title="3">
+        <div class="page front flip p3d">
+			那只蝙蝠侠是谁！？？
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page4" title="4">
+        <div class="page front flip p3d">
+            出现了！嘟嘟嘴and剪刀手
+		</div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page5" title="5">
+        <div class="page front flip p3d">
+            这特效你加的么，像个灯泡
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page6" title="6">
+        <div class="page front flip p3d">
+           感觉会有一头牛撞过来。
+		</div>
+        <div class="page back"></div>
+    </div>
+	<div class="front-cover p3d" id="page7" title="7">
+        <div class="page front flip p3d">
+				 想去。。。
+		</div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page8" title="8">
+        <div class="page front flip p3d">
+            小龙女！！额。。。
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page9" title="9">
+        <div class="page front flip p3d">
+				小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？小龙女在哪？？？
+		</div>
+        <div class="page back"></div>
+    </div>
+	<div class="front-cover p3d" id="page10" title="10">
+        <div class="page front flip p3d">
+			刚看到这图的时候大惊！前面那位仁兄莫不是我黄振师兄！！！不不不，黄振师兄比较猥琐一点。
+		</div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page11" title="11">
+        <div class="page front flip p3d">
+			你说的白长腿，下次想要拍白长腿的话记得要叫拍照的人蹲下哦！
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page12" title="12">
+        <div class="page front flip p3d">
+            那次和室友联机玩饥荒，用我手机做路由器连接，我们玩着玩着，他突然总是掉线，我骂他你那什么破电脑，然后我手机突然亮起来，关机铃声萦绕耳边。没电了。。。
+		</div>
+        <div class="page back"></div>
+    </div>
+	<div class="front-cover p3d" id="page13" title="13">
+        <div class="page front flip p3d">
+            想起了我那室友，有一天他晒枕头，他就坐在宿舍里看球赛，一场雨过后，我：外面的枕头是不是你的？他：卧槽！之后又艳阳高照，他又拿出去晒，没多久又是一场雨过后，我：你又晒枕头了？他：尼玛！下午有出太阳了，他再拿去晒，到了5点多，我们准备去吃饭，我去厕所扫泡尿，看到阳台外的树叶还在哗哗滴水，我：下雨了，你有没有晒枕头？他：。。。
+        </div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page14" title="14">
+        <div class="page front flip p3d">
+            这边天气多变，一个考研学霸一边晒被子，一边在楼下自习，突然大雨就下起来了，他赶忙收被子，还是晚了一步。五分钟后又艳阳高照，他又拿出被子来晒，半个小时又下雨。。。
+        </div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page15" title="15">
+        <div class="page front flip p3d">
+            最右边那姑娘是谁，无论动作、神态都完美诠释逗逼真谛
+		</div>
+        <div class="page back"></div>
+    </div>
+	<div class="front-cover p3d" id="page16" title="16">
+        <div class="page front flip p3d">
+            打算参加goggle全国创新创业大赛，我想做个问卷调查、统计分析的APP，被韦晓伶笑的花枝乱颤。她说想改分答，我对她晓之以理动之以情，告诉她一个残酷的事实：我们没钱！“你赢了”她说。
+        </div>
+        <div class="page back"></div>
+    </div>
+
+	<div class="front-cover p3d" id="page17" title="17">
+        <div class="page front flip p3d">
+            这学期的一门考试 自动控制原理 考了六十几名，wtf！低于平均分了！！！
+        </div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page18" title="18">
+        <div class="page front flip p3d">
+            找实习，发现在市区里的都是网络公司，找到都是程序员，就连个最硬件的都少，又没钱搬出去住，又要把stm32学习一下，感觉留在学校比较好~一个室友到白云区那边，没有网络、打地铺。。。希望小强兄弟们善待他
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page19" title="19">
+        <div class="page front flip p3d">
+            最近又开始练车了，被教练骂的跟傻子一样，那个死胖大叔就知道骂人，又不告诉我要怎么做，说什么自己想，自己回去看视频。。。好委屈啊，还说多练是没用的，额，我还是个孩子，我不懂，我不知道看个教学的视频就能够去考试。。（摔）
+        </div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page20" title="20">
+        <div class="page front flip p3d">
+            真的是不懂配色，丑的令人尴尬~~
+		</div>
+        <div class="page back"></div>
+    </div>
+	
+	<div class="front-cover p3d" id="page21" title="21">
+        <div class="page front flip p3d">
+            呵呵，曾经如花似玉的姑娘，你又老一岁了。时间让人猝不及防，也许过不了多久，大家都要老了。那些冥顽不灵的时光啊，催赶、催赶，我都几乎弄丢了过去，还是你机智，记下了缤纷的昨天。这些图是从你空间偷来的，希望挑到的是快乐回忆。
+        </div>
+        <div class="page back"></div>
+    </div>
+</div>
+
+<div class="note" style="font-family: Calibri, 黑体; height: 100px; width: 150px; float:left; margin-top: 10px; margin-left:10px;">
+	我也不知道为什么，第一次翻页的时候要先点一下再翻页
+	就是 "click~ flip~"
+</div>
+
+<iframe style="visibility:hidden;" frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="http://music.163.com/outchain/player?type=2&id=5046378&auto=1&height=32"></iframe>
+<script>
+
+	var centerPoint = window.innerWidth / 2
+		pageNumber = 1;
+	
+	var hold = false,
+		move = false,
+		pageX;
+		
+	window.onresize = function () {
+        centerPoint = window.innerWidth / 2;
+    };
+	
+	var page = new Page(document.querySelectorAll('.front-cover')[0]);
+	
+	window.onmousedown = function(event){
+		if(page) page = null;
+		page = new Page((event.target).parentNode);
+	}
+
+	
+	var fresh = setInterval("update(page)", 40);
+	
+	function yes(){
+		var r=confirm("要不要试试点‘垃圾’");
+		if (r==true){
+			window.open("funfun.html");
+		} 
+	}
+	
+	function no(){
+		window.open("funfun.html");
+	}
+
+	function update(page){
+		var angle = page.clamp(page.getAngle(), -203, 0);
+		for(var j = 0; j < page.prefixes.length; j++){
+			page.page.style[page.prefixes[j] + 'Transform'] = 'rotateY(' + angle + 'deg)';
+		}
+	}
+
+	function Page(page){
+		this.page = page;
+		this.prefixes = ['Webkit', 'Moz', 'ms', 'O', ''];
+		this.pageSize = 500
+		this.centerPoint;
+		this.angle = 0;
+		this.clamp = function (val, min, max) {
+			return Math.max(min, Math.min(val, max));
+		}
+
+		this.page.onmousedown = function (e){
+			console.log("onmousedown " + e.target);
+			hold = true;
+			
+			console.log("title " + page.title);
+		}
+		
+		window.onmouseup = function(){
+			console.log("onmouseup");
+			if(hold) hold = false;
+			if(move) move = false;
+		}
+		
+		window.onmousemove = function(evt){
+			console.log("onmousemove + hold " + hold);
+			if(!hold) return;
+			pageX = evt.pageX;
+			move = true;
+		}
+		
+		this.getAngle = function(){
+			if(hold && move){
+				this.angle = this.clamp((centerPoint - pageX + this.pageSize) / this.pageSize * -90, -180 - page.title, 0);
+				return this.angle;
+			}
+			else{
+				if(this.angle < 0 && this.angle > -90){
+					return this.angle += 10;
+				}
+				else if(this.angle > -180 - page.title && this.angle <= -90){
+					return this.clamp(this.angle -= 10, -180 - page.title, -90);
+				}
+			}
+		}
+		
+	}
+		
+
+</script>

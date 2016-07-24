@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>生日快乐</title>
+</head>
+<body style="background-color: #000;">
+    <img id="img1" src="imgs0/30.jpg" style="margin: 0 auto; padding: 0 0; height: 800px; display:none;">
+    <script type="text/javascript">
+		var img = document.getElementById('img1');
+		var timer = setInterval(function() {
+			if (img.complete) {
+				imgLoad();
+				clearInterval(timer);
+			}
+		}, 50)
+
+        function imgLoad(){
+			img.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
