@@ -1,15 +1,24 @@
 ﻿
-var imgIndexDay = 1;
-var imgIndexNight = 51;
+var imgIndexDay = 0;
+var imgIndexNight = 50;
 
 window.onload = function(){
 	adjustTimeFont();
-	changeBackground('');
+	changeBackground();
 };
 
 motion();
 getTime();
 
+
+function imgLoad(img, callcack) {
+	var timer = setInterval(function () {
+		if (img.complete) {//判断图片是否加载完成
+			callcack(img)
+			clearInterval(timer);
+		}
+	}, 50);
+}
 
 function findImg(directoryPath){
 	var i;
@@ -17,7 +26,7 @@ function findImg(directoryPath){
 	var isImgExsist;
 	var timeNow = new Date();
 	if((timeNow.getHours() > 0) && (timeNow.getHours() < 6)){
-		for(i = imgIndexNight; i++;)
+		for(i = imgIndexNight + 1;;) /* i++ here will add first then into loop*/
 		{
 			if(i > 99) {
 				i = 51;
@@ -35,11 +44,12 @@ function findImg(directoryPath){
 					break;
 				}
 			}
+			i++;
 			to++;
-			if(to > 50) break;
+			if(to > 100) break;
 		}
 	}else{
-		for(i = imgIndexDay; i++;)
+		for(i = imgIndexDay + 1;;)	
 		{
 			if(i > 50) {
 				i = 1;
@@ -57,8 +67,9 @@ function findImg(directoryPath){
 					break;
 				}
 			}
+			i++;
 			to++;
-			if(to > 50) break;
+			if(to > 100) break;
 		}
 	}
 }
@@ -88,9 +99,13 @@ function adjustTimeFont(){
 function changeBackground(){
 	var bgDiv;
 	var imgUrl;
+	var breaktime = 0;
 	bgDiv = document.getElementById('imgdiv');
 	imgUrl = findImg("./images/");
-	
+	while((imgUrl == undefined) && (breaktime < 1000)){
+		imgUrl = findImg("./images/");
+		breaktime++;
+	}
 	var imgProp = getImgProportion(imgUrl);
 	var winProp = getWindowProportion();
 	if( imgProp > winProp ){
