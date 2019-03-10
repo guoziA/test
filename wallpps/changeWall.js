@@ -1,8 +1,6 @@
-
-var img1 = './images/linzhiling.jpg';
-var img2 = './images/redgirl.jpeg';
-
-var imgBool;
+﻿
+var imgIndexDay = 1;
+var imgIndexNight = 51;
 
 window.onload = function(){
 	adjustTimeFont();
@@ -12,6 +10,70 @@ window.onload = function(){
 motion();
 getTime();
 
+
+function findImg(directoryPath){
+	var i;
+	var to = 1;
+	var isImgExsist;
+	var timeNow = new Date();
+	if((timeNow.getHours() > 0) && (timeNow.getHours() < 6)){
+		for(i = imgIndexNight; i++;)
+		{
+			if(i > 99) {
+				i = 51;
+			}
+			isImgExsist = isHasImg(directoryPath + i + ".jpg");
+			if(isImgExsist){
+				imgIndexNight = i;
+				return directoryPath + i + ".jpg";
+				break;
+			}else{
+				isImgExsist = isHasImg(directoryPath + i + ".jpeg");
+				if(isImgExsist){
+					imgIndexNight = i;
+					return directoryPath + i + ".jpeg";
+					break;
+				}
+			}
+			to++;
+			if(to > 50) break;
+		}
+	}else{
+		for(i = imgIndexDay; i++;)
+		{
+			if(i > 50) {
+				i = 1;
+			}
+			isImgExsist = isHasImg(directoryPath + i + ".jpg");
+			if(isImgExsist){
+				imgIndexDay = i;
+				return directoryPath + i + ".jpg";
+				break;
+			}else{
+				isImgExsist = isHasImg(directoryPath + i + ".jpeg");
+				if(isImgExsist){
+					imgIndexDay = i;
+					return directoryPath + i + ".jpeg";
+					break;
+				}
+			}
+			to++;
+			if(to > 50) break;
+		}
+	}
+}
+
+function isHasImg(pathImg){
+    var ImgObj=new Image();
+    ImgObj.src= pathImg;
+     if(ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0))
+     {
+       return true;
+     } else {
+       return false;
+    }
+}
+
 function onBodyResize(){
 	adjustTimeFont();
 }
@@ -20,22 +82,14 @@ function adjustTimeFont(){
 	var winWidth = document.body.clientWidth;
 	var pWidth = winWidth * 0.9;
 	var pEle = document.getElementById("timer");
-	pEle.style.fontSize = pWidth / 7 + 'px';
+	pEle.style.fontSize = pWidth / 4 + 'px';
 }
 
-function changeBackground(imgStr){
+function changeBackground(){
 	var bgDiv;
 	var imgUrl;
 	bgDiv = document.getElementById('imgdiv');
-	if(imgBool == true){
-		imgUrl = img1;
-		bgDiv.style.backgroundImage = "url(" + img1 + ")";
-		imgBool = false;
-	}else{
-		imgUrl = img2;
-		bgDiv.style.backgroundImage = "url(" + img2 + ")";
-		imgBool = true;
-	}
+	imgUrl = findImg("./images/");
 	
 	var imgProp = getImgProportion(imgUrl);
 	var winProp = getWindowProportion();
@@ -44,29 +98,28 @@ function changeBackground(imgStr){
 	}else{
 		bgDiv.style.backgroundSize = "auto 100%";
 	}
+	bgDiv.style.backgroundImage = "url(" + imgUrl + ")";
 	bgDiv.style.backgroundRepeat = "no-repeat";
+	bgDiv.style.backgroundPosition = "center top";
+	console.log("img: " + imgUrl);
 }
 
 function getImgProportion(imgUrl){
 	var img = new Image;
 	img.src = imgUrl;
 	if(img.complete){
-		// 打印
-		console.log('from:complete : width:'+img.width+',height:'+img.height);
+		return img.height / img.width;
 	}else{
 		// 加载完成执行
 		img.onload = function(){
-        // 打印
-        console.log('from:onload : width:'+img.width+',height:'+img.height);
-		}
-	};
-	return img.height / img.width;
+		};
+		return img.height / img.width;
+	}
 }
 
 function getWindowProportion(){
 	var winWidth = document.body.clientWidth;
 	var winHeight = document.body.clientHeight;
-	console.log('window width: ' + winWidth + ', window height: ' + winHeight);
 	return winHeight / winWidth;
 }
 
@@ -81,6 +134,6 @@ function PrefixInteger(num, n) {
 }
 
 function motion(){
-	setInterval( changeBackground, 2000 );
+	setInterval( changeBackground, 30 * 1000 );
 	setInterval( getTime, 1000 );
 }
